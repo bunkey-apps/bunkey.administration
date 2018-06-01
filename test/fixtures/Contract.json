@@ -1,0 +1,10 @@
+{
+  "plan": {
+    "sizeTotal": "160 GB",
+    "sizeVideoRow": "100 GB",
+    "sizeVideoFinal": "60 GB"
+  },
+  "monthlyPaymentDay": 5,
+  "startDate": "2018-06-05T00:00:00.000Z",
+  "endDate": "2019-06-05T00:00:00.000Z"
+}
