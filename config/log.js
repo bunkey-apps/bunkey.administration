@@ -1,10 +1,10 @@
-let winston = require('winston');
+const winston = require('winston');
 
 module.exports = new winston.Logger({
   level: 'silly',
   exitOnError: false,
   transports: [
-    new(winston.transports.Console)({
+    new (winston.transports.Console)({
       prettyPrint: true,
       colorize: true,
       json: false,

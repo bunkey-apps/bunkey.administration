@@ -3,7 +3,8 @@ import app from '../../server.js';
 import clientData from '../fixtures/Client';
 import contractData from '../fixtures/Contract';
 import paymentData from '../fixtures/Payment';
-const apikey = process.env.API_GATEWAY_KEY || '1234567890';
+
+let apikey = '';
 let server = {};
 let request = {};
 let client = {};
@@ -48,6 +49,7 @@ describe('Payment Controller tests', () => {
       const { Client, Contract } = cano.app.models;
       server = await app;
       request = supertest(server);
+      apikey = process.env.API_GATEWAY_APIKEY;
       client = await Client.create(clientData);
       Object.assign(contractData, { client: client.id });
       contract = await Contract.create(contractData);

@@ -1,6 +1,4 @@
-
 class PaymentController {
-
   async create({ request, params, response }) {
     const { Contract } = cano.app.models;
     const contr = await Contract.getById(params.contract);
@@ -30,7 +28,6 @@ class PaymentController {
     await contr.deletePaymentById(params.id);
     response.status = 204;
   }
-
 }
 
 module.exports = PaymentController;

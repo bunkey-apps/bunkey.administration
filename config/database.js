@@ -1,7 +1,8 @@
 module.exports = {
 	stores: {
 		mongo: {
-			connection: { uri: 'mongodb://localhost/bunkey-administration' },
+			connection: { uri: process.env.MONGODB_URI },
+			adapter: 'mongoose',
     },
 	},
 	storeDefault: 'mongo',

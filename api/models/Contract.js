@@ -1,7 +1,6 @@
 import MongooseModel from 'mongoose-model-class';
 import SearchService from 'search-service-mongoose';
 import moment from 'moment';
-import mongoose from 'mongoose';
 import keys from 'lodash/keys';
 import find from 'lodash/find';
 
@@ -14,7 +13,6 @@ const modelFields = [
 ];
 
 class Contract extends MongooseModel {
-
   schema() {
     const Plan = new MongooseModel.Schema({
       sizeTotal: { type: String, require: true },
@@ -26,7 +24,7 @@ class Contract extends MongooseModel {
       observation: { type: String, require: true },
     });
     return {
-      client: { type: MongooseModel.types.ObjectId, ref: 'Client',  require: true },
+      client: { type: MongooseModel.types.ObjectId, ref: 'Client', require: true },
       plan: { type: Plan, require: true },
       monthlyPaymentDay: { type: Number, require: true },
       startDate: { type: Date, require: true },
@@ -50,7 +48,7 @@ class Contract extends MongooseModel {
   }
 
   async createPayment(payment, generateID = true) {
-    const _id = generateID ? mongoose.Types.ObjectId(): payment._id;
+    const _id = generateID ? MongooseModel.adapter.Types.ObjectId() : payment._id;
     Object.assign(payment, { _id });
     const operations = { $push: { payments: payment, $sort: { createdAt: 1 } } };
     const { monthlyPaymentDay, nextPayment, endDate } = this;
@@ -82,12 +80,12 @@ class Contract extends MongooseModel {
   }
 
   static getPayments(query) {
-    Object.assign(query, { isCriteriaPipeline: true })
+    Object.assign(query, { isCriteriaPipeline: true });
     if (!query.fields) {
-      Object.assign(query, { fields: 'contract,date,paymed,month,observation' })
+      Object.assign(query, { fields: 'contract,date,paymed,month,observation' });
     }
     if (!query.orderBy) {
-      Object.assign(query, { orderBy: '-paymed,-date' })
+      Object.assign(query, { orderBy: '-paymed,-date' });
     }
     const criteria = buildCriteriaForPayments(query);
     const opts = buildOpts(query);
@@ -123,7 +121,7 @@ class Contract extends MongooseModel {
     if (keys(criteriaDate).length > 0) {
       pipeline.push({
         $match: criteriaDate,
-      })
+      });
     }
     return SearchService.search(this, pipeline, opts);
   }
@@ -131,7 +129,7 @@ class Contract extends MongooseModel {
   static async getById(id) {
     const contract = await this.findById(id);
     if (!contract) {
-      throw new Error('Contract not found.');
+      throw new ContractError('notFound', 'Contract not found.');
     }
     return contract;
   }
@@ -151,12 +149,13 @@ class Contract extends MongooseModel {
   options() {
     return { timestamps: true };
   }
-
 }
 
 function getPaymentById(id, { payments }) {
-  const payment = find(payments,({ _id }) => _id.toString() === id);
-  if (!payment) throw new Error('Payment not found.');
+  const payment = find(payments, ({ _id }) => _id.toString() === id);
+  if (!payment) {
+    throw new PaymentError('notFound', 'Payment not found.');
+  }
   return payment;
 }
 
@@ -168,21 +167,27 @@ function buildOpts(query) {
     fields = modelFields.join(','),
     isCriteriaPipeline = false,
   } = query;
-  return { page, limit, orderBy, fields, isCriteriaPipeline };
+  return {
+    page,
+    limit,
+    orderBy,
+    fields,
+    isCriteriaPipeline,
+  };
 }
 
-function buildCriteriaForPayments({ client, contract, search, fromDate, toDate }) {
-  const criteria = {}
+function buildCriteriaForPayments({ client, contract, search }) {
+  const criteria = {};
   if (search) {
-    Object.assign(criteria, { $text: { $search: search } })
+    Object.assign(criteria, { $text: { $search: search } });
   }
   if (contract) {
-    Object.assign(criteria, { _id: mongoose.Types.ObjectId(contract) })
+    Object.assign(criteria, { _id: MongooseModel.adapter.Types.ObjectId(contract) });
   }
   if (client) {
-    Object.assign(criteria, { 'client': mongoose.Types.ObjectId(client) })
+    Object.assign(criteria, { client: MongooseModel.adapter.Types.ObjectId(client) });
   }
-  return criteria
+  return criteria;
 }
 
 function buildCriteria({ search, fromDate, toDate }) {
@@ -195,7 +200,7 @@ function buildCriteria({ search, fromDate, toDate }) {
 }
 
 function buildCriteriaByDate(fromDate, toDate) {
-  let criteria = {};
+  const criteria = {};
   const filterDate = [];
   if (fromDate) {
     filterDate.push({

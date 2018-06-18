@@ -1,5 +1,4 @@
 class ContractController {
-
   async create({ request, response }) {
     const { Contract } = cano.app.models;
     response.body = await Contract.create(request.body);
@@ -33,7 +32,6 @@ class ContractController {
     await Contract.deleteById(params.id);
     response.status = 204;
   }
-
 }
 
 module.exports = ContractController;

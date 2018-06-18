@@ -2,7 +2,8 @@ import supertest from 'supertest';
 import app from '../../server.js';
 import clientData from '../fixtures/Client';
 import contractData from '../fixtures/Contract';
-const apikey = process.env.API_GATEWAY_KEY || '1234567890';
+
+let apikey = '';
 let server = {};
 let request = {};
 let client = {};
@@ -53,6 +54,7 @@ describe('Contract Controller tests', () => {
       const { Client } = cano.app.models;
       server = await app;
       request = supertest(server);
+      apikey = process.env.API_GATEWAY_APIKEY;
       client = await Client.create(clientData);
       Object.assign(contractData, { client: client.id });
     } catch (e) {

@@ -39,7 +39,7 @@ class Client extends MongooseModel {
   static async getById(id) {
     const client = await this.findById(id);
     if (!client) {
-      throw new Error('Client not found.');
+      throw new ClientError('notFound', 'Client not found.');
     }
     return client;
   }
@@ -63,7 +63,6 @@ class Client extends MongooseModel {
   options() {
     return { timestamps: true };
   }
-
 }
 
 function buildOpts(query) {
@@ -73,7 +72,12 @@ function buildOpts(query) {
     orderBy = '-createdAt',
     fields = modelFields.join(','),
   } = query;
-  return { page, limit, orderBy, fields };
+  return {
+    page,
+    limit,
+    orderBy,
+    fields,
+  };
 }
 
 function buildCriteria({ search, fromDate, toDate }) {

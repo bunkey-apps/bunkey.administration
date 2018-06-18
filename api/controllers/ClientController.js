@@ -1,5 +1,4 @@
 class ClientController {
-
   async create({ request, response }) {
     const { Client } = cano.app.models;
     response.body = await Client.create(request.body);
@@ -33,7 +32,6 @@ class ClientController {
     await Client.deleteById(params.id);
     response.status = 204;
   }
-
 }
 
 module.exports = ClientController;

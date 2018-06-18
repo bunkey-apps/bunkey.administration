@@ -1,7 +1,8 @@
 import supertest from 'supertest';
 import app from '../../server.js';
 import clientData from '../fixtures/Client';
-const apikey = process.env.API_GATEWAY_KEY || '1234567890';
+
+let apikey = '';
 let server = {};
 let request = {};
 let client = {};
@@ -50,6 +51,7 @@ describe('Client Controller tests', () => {
     try {
       server = await app;
       request = supertest(server);
+      apikey = process.env.API_GATEWAY_APIKEY;
     } catch (e) {
       cano.log.error(e);
     }
