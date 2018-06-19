@@ -1,7 +1,8 @@
 class ClientController {
   async create({ request, response }) {
     const { Client } = cano.app.models;
-    response.body = await Client.create(request.body);
+    const client = await Client.create(request.body);
+    response.body = client;
     response.status = 201;
   }
 

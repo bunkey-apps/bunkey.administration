@@ -34,8 +34,7 @@ class Contract extends MongooseModel {
     };
   }
 
-  beforeSave(next) {
-    const doc = this;
+  beforeSave(doc, next) {
     const startDate = moment(doc.startDate);
     doc.nextPayment = moment(`${doc.monthlyPaymentDay}-${startDate.month() + 1}-${startDate.year()}`, 'DD-MM-YYYY');
     next();
