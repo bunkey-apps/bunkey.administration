@@ -13,6 +13,7 @@ router.put('/:id', isApigateway, ContractController.updateById);
 router.delete('/:id', isApigateway, ContractController.deleteById);
 
 router.post('/:contract/payments', isApigateway, PaymentController.create);
+router.get('/:contract/payments', isApigateway, PaymentController.getByContract);
 router.put('/:contract/payments/:id', isApigateway, PaymentController.updateById);
 router.delete('/:contract/payments/:id', isApigateway, PaymentController.deleteById);
 

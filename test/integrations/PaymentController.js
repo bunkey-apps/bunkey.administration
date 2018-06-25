@@ -22,11 +22,20 @@ describe('Payment Controller tests', () => {
     payment = body;
   });
 
+  it('Should get payments by contract id', async () => {
+    const { body } = await request
+      .get(`/contracts/${contract.id}/payments`)
+      .set('apikey', apikey)
+      .expect(200);
+      cano.log.debug(body);
+  });
+
   it('Should get payments', async () => {
     const { body } = await request
       .get('/payments')
       .set('apikey', apikey)
       .expect(200);
+      cano.log.debug(body);
   });
 
   it('Should update payment by id', async () => {

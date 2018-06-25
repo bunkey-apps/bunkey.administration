@@ -81,6 +81,7 @@ lib-cov
 *.log
 *.log*
 *.lock
+*-lock*
 
 ################################################
 # Miscellaneous
