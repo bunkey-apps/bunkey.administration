@@ -1,4 +1,4 @@
-{
+module.exports = {
   "opts": {
     "unknownError": {
       "code": "ContractUnknownError",
