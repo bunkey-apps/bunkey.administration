@@ -2,7 +2,6 @@ import supertest from 'supertest';
 import app from '../../server.js';
 import clientData from '../fixtures/Client';
 import contractData from '../fixtures/Contract';
-import paymentData from '../fixtures/Payment';
 
 let apikey = '';
 let server = {};
@@ -13,36 +12,25 @@ let payment = {};
 
 describe('Payment Controller tests', () => {
 
-  it('Should create a new contract', async () => {
-    const { body } = await request
-      .post(`/contracts/${contract.id}/payments`)
-      .set('apikey', apikey)
-      .send(paymentData)
-      .expect(201);
-    payment = body;
-  });
-
   it('Should get payments by contract id', async () => {
-    const { body } = await request
+    await request
       .get(`/contracts/${contract.id}/payments`)
       .set('apikey', apikey)
       .expect(200);
-      cano.log.debug(body);
   });
 
   it('Should get payments', async () => {
-    const { body } = await request
+    await request
       .get('/payments')
       .set('apikey', apikey)
       .expect(200);
-      cano.log.debug(body);
   });
 
   it('Should update payment by id', async () => {
     await request
       .put(`/contracts/${contract.id}/payments/${payment._id}`)
       .set('apikey', apikey)
-      .send({ observation: 'Jhon and Daenerys for ever <3' })
+      .send({ status: true, observation: 'Jhon and Daenerys for ever <3' })
       .expect(204);
   });
 
@@ -62,6 +50,7 @@ describe('Payment Controller tests', () => {
       client = await Client.create(clientData);
       Object.assign(contractData, { client: client.id });
       contract = await Contract.create(contractData);
+      payment = contract.payments[0];
     } catch (e) {
       cano.log.error(e);
     }

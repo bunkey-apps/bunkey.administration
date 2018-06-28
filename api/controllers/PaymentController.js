@@ -14,7 +14,6 @@ class PaymentController {
   }
 
   async getByContract({ request, params, response }) {
-    cano.log.debug('getByContract');
     const { contract } = params;
     const { collection, pagination } = await Contract.getPayments({ contract, ...request.query });
     response.set('X-Pagination-Total-Count', pagination['X-Pagination-Total-Count']);

@@ -21,7 +21,8 @@ class Contract extends MongooseModel {
     }, { _id: false });
     const Payment = new MongooseModel.Schema({
       month: { type: String, require: true },
-      observation: { type: String, require: true },
+      observation: { type: String, default: '' },
+      status: { type: Boolean, default: false },
     });
     return {
       client: { type: MongooseModel.types.ObjectId, ref: 'Client', require: true },
@@ -35,8 +36,18 @@ class Contract extends MongooseModel {
   }
 
   beforeSave(doc, next) {
-    const startDate = moment(doc.startDate);
+    const payments = [];
+    let { startDate, endDate } = doc;
+    startDate = moment(startDate);
+    const iterator = moment(startDate);
+    endDate = moment(endDate);
     doc.nextPayment = moment(`${doc.monthlyPaymentDay}-${startDate.month() + 1}-${startDate.year()}`, 'DD-MM-YYYY');
+    for (let i = 0; i < 12; i++) {
+      const month = iterator.format('MMMM');
+      payments.push({ month });
+      iterator.add(1, 'months');
+    }
+    doc.payments = payments;
     next();
   }
 
