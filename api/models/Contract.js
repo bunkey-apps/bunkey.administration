@@ -22,12 +22,13 @@ class Contract extends MongooseModel {
     const Payment = new MongooseModel.Schema({
       month: { type: String, require: true },
       observation: { type: String, default: '' },
-      status: { type: Boolean, default: false },
+      paymed: { type: Boolean, default: false },
     });
     return {
       client: { type: MongooseModel.types.ObjectId, ref: 'Client', require: true },
       plan: { type: Plan, require: true },
       monthlyPaymentDay: { type: Number, require: true },
+      monthlyCost: { type: Number, require: true },
       startDate: { type: Date, require: true },
       endDate: { type: Date, require: true },
       nextPayment: { type: Date, require: true },
@@ -37,12 +38,11 @@ class Contract extends MongooseModel {
 
   beforeSave(doc, next) {
     const payments = [];
-    let { startDate, endDate } = doc;
+    let { startDate } = doc;
     startDate = moment(startDate);
     const iterator = moment(startDate);
-    endDate = moment(endDate);
     doc.nextPayment = moment(`${doc.monthlyPaymentDay}-${startDate.month() + 1}-${startDate.year()}`, 'DD-MM-YYYY');
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 12; i += 1) {
       const month = iterator.format('MMMM');
       payments.push({ month });
       iterator.add(1, 'months');
@@ -113,7 +113,7 @@ class Contract extends MongooseModel {
             contract: {
               _id: '$_id',
               client: '$client',
-              typePay: '$typePay',
+              monthlyCost: '$monthlyCost',
             },
             createdAt: '$payments.createdAt',
             paymed: '$payments.paymed',
