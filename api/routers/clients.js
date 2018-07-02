@@ -8,6 +8,7 @@ const isApigateway = apiKey('apiGateway');
 router.post('/', isApigateway, ClientController.create);
 router.get('/', isApigateway, ClientController.get);
 router.get('/:id', isApigateway, ClientController.getById);
+router.get('/:id/contracts', isApigateway, ClientController.getContracts);
 router.put('/:id', isApigateway, ClientController.updateById);
 router.delete('/:id', isApigateway, ClientController.deleteById);
 

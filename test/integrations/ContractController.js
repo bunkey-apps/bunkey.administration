@@ -34,6 +34,13 @@ describe('Contract Controller tests', () => {
       .expect(200);
   });
 
+  it('Should get contracts by client id', async () => {
+    const { body } = await request
+      .get(`/clients/${client.id}/contracts`)
+      .set('apikey', apikey)
+      .expect(200);      
+  });
+
   it('Should update contract by id', async () => {
     const { body } = await request
       .put(`/contracts/${contract._id}`)

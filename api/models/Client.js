@@ -30,6 +30,10 @@ class Client extends MongooseModel {
     };
   }
 
+  getContracts() {
+    return Contract.find({ client: this.id });
+  }
+
   static get(query) {
     const criteria = buildCriteria(query);
     const opts = buildOpts(query);
