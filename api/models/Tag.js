@@ -9,7 +9,7 @@ const modelFields = [
 class Tag extends MongooseModel {
   schema() {
     return {
-      name: { type: String, require: true },
+      name: { type: String, required: true },
     };
   }
 
