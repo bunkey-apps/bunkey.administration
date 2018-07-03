@@ -44,6 +44,8 @@
         "Client": true,
         "Contract": true,
         "ContractError": true,
-        "PaymentError": true
+        "PaymentError": true,
+        "Tag": true,
+        "TagError": true
     }
 }
