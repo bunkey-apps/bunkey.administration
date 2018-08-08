@@ -55,7 +55,12 @@ class Client extends MongooseModel {
   }
 
   static async deleteById(id) {
+    const { Contract } = cano.app.models;
     await this.getById(id);
+    const countContracts = await Contract.count({ client: id });
+    if (countContracts > 0) {
+      throw new ClientError('relatedClient');
+    }
     const criteria = { _id: id };
     return this.remove(criteria);
   }
