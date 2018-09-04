@@ -25,7 +25,7 @@ ADD . $appDir
 # Compilate the app
 RUN yarn run build
 
-EXPOSE 8000
+EXPOSE 8001
 
 # Staring App
 ENTRYPOINT ["pm2", "start"]
