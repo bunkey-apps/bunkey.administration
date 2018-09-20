@@ -1,7 +1,9 @@
 class ClientController {
   async create({ request, response }) {
     const client = await Client.create(request.body);
-    response.body = client;
+    const { body: { root } } = await ObjectService.createClient(client);
+    await Client.updateById(client.id, { root });
+    response.body = { ...client.toJSON(), root };
     response.status = 201;
   }
 

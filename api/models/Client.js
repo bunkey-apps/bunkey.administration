@@ -27,6 +27,7 @@ class Client extends MongooseModel {
       phone: { type: String, index: true, require: true },
       status: { type: Boolean, default: true },
       acountSetting: { type: AcountSetting, default: {} },
+      root: { type: MongooseModel.types.ObjectId, index: true, require: true },
     };
   }
 

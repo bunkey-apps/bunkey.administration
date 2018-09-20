@@ -45,6 +45,8 @@
         "Contract": true,
         "ContractError": true,
         "PaymentError": true,
+        "RequestService": true,
+        "ObjectService": true,
         "Tag": true,
         "TagError": true
     }
