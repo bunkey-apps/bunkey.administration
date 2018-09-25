@@ -10,6 +10,7 @@ const modelFields = [
   'phone',
   'status',
   'acountSetting',
+  'root',
 ];
 
 class Client extends MongooseModel {
