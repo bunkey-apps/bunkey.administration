@@ -9,6 +9,12 @@ class ObjectService {
     const response = await request.post('/clients', body, { headers });
     return response;
   }
+
+  async updateClient(id, body) {
+    const request = RequestService.create(baseUrl);
+    const response = await request.put(`/clients/${id}`, body, { headers });
+    return response;
+  }
 }
 
 module.exports = ObjectService;

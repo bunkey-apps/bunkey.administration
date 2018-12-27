@@ -30,6 +30,7 @@ class ClientController {
 
   async updateById({ params, request, response }) {
     await Client.updateById(params.id, request.body);
+    await ObjectService.updateClient(params.id, request.body);
     response.status = 204;
   }
 
